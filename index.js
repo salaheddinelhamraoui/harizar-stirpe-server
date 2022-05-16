@@ -15,7 +15,8 @@ app.get('/', (req, res) => {
 });
 
 app.post('/payment', cors(), async (req, res) => {
-  let { amount, id } = req.body;
+  let { amount, id, city, email, name, phone } = req.body;
+
   try {
     const payment = await stripe.paymentIntents.create({
       amount,
@@ -23,6 +24,12 @@ app.post('/payment', cors(), async (req, res) => {
       description: 'Harizar Design',
       payment_method: id,
       confirm: true,
+      metadata: {
+        city: city,
+        email: email,
+        name: name,
+        phone: phone,
+      },
     });
     console.log('Payment', payment);
     res.json({
